@@ -10,4 +10,10 @@ export class ArticleRepository implements IRepository<Articles> {
         const data = await resp.json();
         return data.data;
     }
+
+    async getArticleById(id: string | number): Promise<Articles[] | null> {
+        const resp = await fetch(`${this.urlPrefix}/${id}`);
+        const data = await resp.json();
+        return data.data;
+    }
 }
