@@ -64,7 +64,7 @@ function ArticleCard(props : Props) {
                         <Row>
                             <Col style={{ display: "flex", alignItems: "center" }}>
                                 <ChatIcon style={{ fontSize: '3rem', color: '#F32222' }} />
-                                <h3 style={{ marginLeft: '5px' }}>5</h3>
+                                <h3 style={{ marginLeft: '5px' }}>{item.TotalComment}</h3>
                             </Col>
                         </Row>
                     </div>
