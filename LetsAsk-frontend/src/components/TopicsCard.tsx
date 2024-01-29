@@ -10,24 +10,22 @@ function TopicsCard() {
   return (
     <Card style={{ width: '100rem', borderRadius: "40px" , backgroundColor: "#282727", color: "white", marginTop: "10px"}}>
       <Card.Body>
-      <Container fluid="md">
-            <Row>
-                <Col xs={10}>
-                    <Card.Title>
-                        <h3><a href='/' style={{color: "white"}}>I don’t know why my cat is so cute, I can’t take my eyes off!</a></h3>
-                    </Card.Title>
-                </Col>
-                <Col>
-                    <Row>
-                        <Col>
-                            <ChatIcon style={{ fontSize: '3rem', color: '#F32222' }} />
-                        </Col>
-                        <Col>
-                            <h3>5</h3>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
+        <Container fluid="md">
+        <Row>
+            <Col xs={10}>
+                <Card.Title>
+                    <h3><a href='/article/1' style={{ color: "white" }}>I don’t know why my cat is so cute, I can’t take my eyes off!</a></h3>
+                </Card.Title>
+            </Col>
+            <Col xs={{ order: 'last' }}>
+                <Row>
+                    <Col style={{ display: "flex", alignItems: "center" }}>
+                        <ChatIcon style={{ fontSize: '3rem', color: '#F32222' }} />
+                        <h3 style={{ marginLeft: '5px' }}>5</h3>
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
         </Container>
         <Card.Text>
             <Container fluid="md">

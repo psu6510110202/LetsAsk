@@ -13,7 +13,7 @@ const NavBar = () => {
   return (
     <Navbar expand="lg" style={{ backgroundColor: '#B30006' }}>
     <Container fluid>
-        <Navbar.Brand href=" ">
+        <Navbar.Brand href="/">
         <img
             alt=""
             src="/logo.png"
