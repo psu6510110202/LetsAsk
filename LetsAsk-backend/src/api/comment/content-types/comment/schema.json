@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "comments",
+  "info": {
+    "singularName": "comment",
+    "pluralName": "comments",
+    "displayName": "Comment",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Description": {
+      "type": "text",
+      "required": true
+    },
+    "Creator": {
+      "type": "string",
+      "required": true
+    },
+    "AvatarCreator": {
+      "type": "string"
+    },
+    "PostContentId": {
+      "type": "integer"
+    }
+  }
+}
