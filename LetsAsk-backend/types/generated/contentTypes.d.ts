@@ -377,7 +377,7 @@ export interface ApiCommentComment extends Schema.CollectionType {
     Description: Attribute.Text & Attribute.Required;
     Creator: Attribute.String & Attribute.Required;
     AvatarCreator: Attribute.String;
-    PostContentId: Attribute.Integer;
+    PostContentId: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -789,6 +789,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'plugin::users-permissions.role'
     >;
     avatar: Attribute.String;
+    userComments: Attribute.BigInteger & Attribute.DefaultTo<'0'>;
+    userArticles: Attribute.BigInteger & Attribute.DefaultTo<'0'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

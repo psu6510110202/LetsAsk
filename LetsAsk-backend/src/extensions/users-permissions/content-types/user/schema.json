@@ -67,6 +67,14 @@
     },
     "avatar": {
       "type": "string"
+    },
+    "userComments": {
+      "type": "biginteger",
+      "default": "0"
+    },
+    "userArticles": {
+      "type": "biginteger",
+      "default": "0"
     }
   }
 }

@@ -12,7 +12,6 @@ export const ScrollToTop = () => {
     
     return null
 }
-
 const secretKey = import.meta.env.VITE_SECRET_KEY
 
 export const storeUser = (data:any) => {
@@ -22,6 +21,8 @@ export const storeUser = (data:any) => {
             id: data.user.id,
             username: data.user.username,
             avatar: data.user.avatar,
+            userComments: data.user.userComments,
+            userArticles: data.user.userArticles,
             jwt: data.jwt
         }),
         secretKey
