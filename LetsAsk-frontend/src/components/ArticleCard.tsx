@@ -23,7 +23,7 @@ function ArticleCard(props : Props) {
     const time = dateTime.toTimeString().split(' ')[0];
 
     const tagsList = item.Tags.split(',').map(item => item.trim());
-    console.log(avatar)
+    // console.log(avatar)
     return (
         <Card style={{ width: '100rem', borderRadius: "40px" , backgroundColor: "#282727", color: "white", marginTop: "10px"}}>
             <Card.Body>
