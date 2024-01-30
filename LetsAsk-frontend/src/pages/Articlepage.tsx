@@ -76,7 +76,7 @@ const Articlepage = () => {
             </div>
             <Container>
                 <Row>
-                    <WriteCommentCard/>
+                    <WriteCommentCard PostId={params.id as string}/>
                 </Row>
             </Container>
         </div>

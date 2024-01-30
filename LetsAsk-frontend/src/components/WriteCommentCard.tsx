@@ -4,11 +4,67 @@ import LoginIcon from '@mui/icons-material/Login'
 import { userData } from '../Helper';
 import conf from '../conf';
 import Form from 'react-bootstrap/Form';
+import { ChangeEvent, useState } from 'react';
+import Repo from '../repositories'
+import Postcomment from '../models/PostComments';
+import CryptoJS from 'crypto-js';
+import toast from 'react-hot-toast';
 
-function WriteCommentCard() {
+interface Props {
+    PostId: string
+}
+
+function WriteCommentCard(prop: Props) {
     const user = userData()
-    const avatar = `${conf.apiPrefix}${user.avatar}`
+    const [commentText, setCommentText] = useState('')
 
+    const handleChange = (e : ChangeEvent<HTMLInputElement>) => {
+        setCommentText(e.target.value)
+    }
+
+    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        await Repo.Commentdata.createComment(newComment, user.jwt)
+        await updateUserCommentCount();
+        setCommentText('')
+        toast.success("Comment success")
+        window.location.reload()
+    }
+
+    const newComment : Postcomment = {
+        data: {
+            PostContentId: prop.PostId,
+            Description: commentText,
+            Creator: user.username,
+            AvatarCreator: user.avatar
+        }
+    }
+
+    const updateUserCommentCount = async () => {
+        user.userComments += 1
+        const secretKey = import.meta.env.VITE_SECRET_KEY
+
+        const updatedEncryptedData = CryptoJS.AES.encrypt(JSON.stringify(user), secretKey).toString();
+
+        sessionStorage.setItem('user', updatedEncryptedData)
+
+        const updateData = {
+            userComments: user.userComments
+        }
+      
+
+        await fetch(`${conf.apiPrefix}/api/users/${user.id}`, {
+            method : 'PUT',
+            headers :{
+              "Authorization" : `Bearer ${user.jwt}`,
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updateData)
+          })
+      
+    }
+    
     return (
         <>
             {!user.jwt &&
@@ -31,8 +87,8 @@ function WriteCommentCard() {
                     <Typography variant="h5" style={{ marginTop: '10px', marginBottom: '10px', marginLeft: '15px' }}>
                         Your Comment
                     </Typography>
-                    <Form.Control as="textarea" rows={5} placeholder="Write your comment here" style={{ marginLeft: '3px'}} />
-                    <Button variant="contained" style={{ backgroundColor: '#8A0A0A', borderRadius: '20px', marginTop: '10px', alignSelf: 'flex-end' }}>
+                    <Form.Control as="textarea" rows={5} placeholder="Write your comment here" style={{ marginLeft: '3px'}} onChange={handleChange} />
+                    <Button type="submit" onClick={handleSubmit} variant="contained" style={{ backgroundColor: '#8A0A0A', borderRadius: '20px', marginTop: '10px', alignSelf: 'flex-end' }}>
                         Comment
                     </Button>
                 </Card>
