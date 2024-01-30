@@ -6,19 +6,31 @@ import Card from 'react-bootstrap/Card';
 import Avatar from '@mui/material/Avatar';
 import FlagIcon from '@mui/icons-material/Flag';
 import { Button } from '@mui/material';
+import Comments from '../models/Comments';
+import conf from '../conf'
 
-
-interface CommentCardProps {
-    commentNo: number;
+interface Props {
+    CommentData: Comments;
+    index : number;
   }
 
-function CommentCard({ commentNo }: CommentCardProps) {
+function CommentCard(prop: Props) {
+
+  const item = prop.CommentData.attributes
+  const avatar = `${conf.apiPrefix}${item.AvatarCreator}`
+
+  const dateTime = new Date(item.createdAt);
+
+    // Get the date and time components
+  const date = dateTime.toDateString();
+  const time = dateTime.toTimeString().split(' ')[0];
+
   return (
     <Card style={{ width: '100rem', borderRadius: "40px" , backgroundColor: "#282727", color: "white", marginTop: "10px"}}>
       <Card.Body>
         <Card.Text>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <h6 style={{color: '#F32222'}}>Comment {commentNo}</h6>
+                <h6 style={{color: '#F32222'}}>Comment {prop.index + 1}</h6>
                 <Button>
                     <FlagIcon style={{ fontSize: '2rem', color: '#F32222' }} />
                 </Button>
@@ -26,18 +38,17 @@ function CommentCard({ commentNo }: CommentCardProps) {
         </Card.Text>
         <Card.Text>
             <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Your description of your adorable cat is so relatable! Cats have this magical ability to captivate us with their cuteness 
-            and playful behavior. It's like they have a special charm that makes it impossible to resist showering them with love and attention.
+            &nbsp;&nbsp;&nbsp;&nbsp;{item.Description}
             </p>
         </Card.Text>
         <Card.Text>
             <div style={{ display: "flex", alignItems: "center" }}>
                 <Avatar
                     alt="Remy Sharp"
-                    src="/avatar2.jpeg"
+                    src={avatar}
                     sx={{ width: 56, height: 56, marginRight: "10px" }}
                 />
-                <h6 style={{color: "#F32222"}}>User: @Imnotlolicon &nbsp;&nbsp; 28/10/2024 &nbsp;&nbsp; 22:30</h6>
+                <h6 style={{color: "#F32222"}}>User: {item.Creator} &nbsp;&nbsp; {date} &nbsp;&nbsp; {time}</h6>
             </div>
         </Card.Text>
       </Card.Body>

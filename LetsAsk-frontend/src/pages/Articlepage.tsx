@@ -8,20 +8,26 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Articles from "../models/Articles";
 import Repo from "../repositories"
+import Comments from "../models/Comments";
 
 
 const Articlepage = () => {
     const [articleData, setArticleData] = useState<Articles[]>([])
+    const [commentData, setCommentData] = useState<Comments[]>([])
     const params = useParams();
 
     const fetchData = async () => {
-        const resp = await Repo.Articledata.getArticleById(params.id as string)
-        if (resp) {
-            if (Array.isArray(resp)) {
-                setArticleData(resp);
+        const respArticles = await Repo.Articledata.getArticleById(params.id as string)
+        if (respArticles) {
+            if (Array.isArray(respArticles)) {
+                setArticleData(respArticles);
             } else {
-                setArticleData([resp]);
+                setArticleData([respArticles]);
             }
+        }
+        const respComments = await Repo.Commentdata.getCommentByPostId(params.id as string)
+        if (respComments) {
+            setCommentData(respComments)
         }
     }
 
@@ -51,21 +57,11 @@ const Articlepage = () => {
                 />
             </div>
             <Container>
-                <Row>
-                    <CommentCard commentNo={1}/>
-                </Row>
-                <Row>
-                    <CommentCard commentNo={2}/>
-                </Row>
-                <Row>
-                    <CommentCard commentNo={3}/>
-                </Row>
-                <Row>
-                    <CommentCard commentNo={4}/>
-                </Row>
-                <Row>
-                    <CommentCard commentNo={5}/>
-                </Row>
+                {commentData.map((item, index) => 
+                    <Row key={index}>
+                        <CommentCard CommentData={item} index={index}/>
+                    </Row>
+                )}
             </Container>
             <div style={{alignItems: 'center', display: "flex", justifyContent: 'center'}}>
                 <hr
