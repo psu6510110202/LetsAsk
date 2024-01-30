@@ -13,9 +13,10 @@ export const ScrollToTop = () => {
     return null
 }
 
-const secretKey = (import.meta.env.VITE_SECRET_KEY)
+const secretKey = import.meta.env.VITE_SECRET_KEY
 
 export const storeUser = (data:any) => {
+    // console.log(import.meta.env.VITE_SECRET_KEY)
     const encryptedData = CryptoJS.AES.encrypt(
         JSON.stringify({
             id: data.user.id,
@@ -25,6 +26,7 @@ export const storeUser = (data:any) => {
         }),
         secretKey
     ).toString();
+
     sessionStorage.setItem('user', encryptedData)
 }
 
@@ -45,7 +47,12 @@ export const userData = () => {
         return false;
     }
 
-  };
-  
+};
+
+export const Logout = () => {
+    sessionStorage.removeItem('user');
+    toast.success("Logout Successful.");
+    return
+}
   
   
