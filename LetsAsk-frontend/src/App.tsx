@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Articlepage from "./pages/Articlepage";
 import { ScrollToTop } from "./Helper";
 import { Toaster } from "react-hot-toast";
+import Profilepage from "./pages/Profilepage";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route index element={<Homepage/>}/>
         <Route path='/article/:id' element={<Articlepage/>}/>
         <Route path="/login" element={<Loginpage />} />
+        <Route path="/profile/" element={<Profilepage />} />
       </Routes>
     </BrowserRouter>
   )
