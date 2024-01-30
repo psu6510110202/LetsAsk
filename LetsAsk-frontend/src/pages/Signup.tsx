@@ -1,46 +1,58 @@
-import TextField from "@mui/material/TextField";
+// import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Form from 'react-bootstrap/Form';
 import Divider from '@mui/material/Divider';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { userData } from "../Helper";
+import { useNavigate } from "react-router";
+import conf from "../conf";
+import axios from "axios";
+import toast from "react-hot-toast";
 
+const initialUser = { email: '', password: '', confirmPassword: '',username: '' };
 
 export default function Signuppage() {
-
+    const navigate = useNavigate()
     const [checked, setChecked] = React.useState(true);
-    const [newUser, setUSer] = useState<{
-        displayName: string;
-        email: string;
-        password: string;
-        confirmPassword: string;
-    }>({
-        displayName: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-    });
+    const [newUser, setUser] = useState(initialUser)
 
-    const { displayName, email, password, confirmPassword } = newUser;
-
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+        const trimmedValue = value.trim();
+        setUser({
+            ...newUser,
+            [name]: trimmedValue,
+        });
 
-        setUSer({ ...newUser, [name]: value });
     };
 
     const onSubmit = async (e: React.FormEvent<EventTarget>) => {
         e.preventDefault();
 
-        if (password !== confirmPassword) {
+        if (newUser.password !== newUser.confirmPassword) {
             alert("Password and Confirm Password do not match");
             return;
         }
 
-        // reset form
-        setUSer({
-            displayName: "",
+        const url = `${conf.apiPrefix}/api/auth/local/register`
+        const data = {
+            username: newUser.username,
+            email: newUser.email,
+            password: newUser.password
+        }
+        console.log(data)
+        try {
+            await axios.post(url, data)
+            toast.success('Registion Successfully')
+            navigate('/login', {replace: true})
+        } catch {
+            toast.error("Username or Email has already exist.")
+        }
+
+        setUser({
+            username: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -50,6 +62,14 @@ export default function Signuppage() {
     const handleCheckboxChange = (event: { target: { checked: boolean | ((prevState: boolean) => boolean); }; }) => {
         setChecked(event.target.checked);
     };
+
+    useEffect(() => {
+        const data = userData();
+        if(data.jwt) {
+          navigate('/')
+        }
+      });
+  
 
     return (
         <div className="container mt-6" style={{ color: 'white', padding: '20px' }}>
@@ -63,9 +83,9 @@ export default function Signuppage() {
                             <Form.Control
                                 style={{ backgroundColor: '#5B5B5B', borderRadius: '20px', width: '593px', height: '56px', color: 'white' }}
                                 type="username"
-                                name="displayName"
+                                name="username"
                                 placeholder="Enter username"
-                                onChange={onChange}
+                                onChange={handleChange}
                             />
                         </Form.Group>
                     </div>
@@ -78,7 +98,7 @@ export default function Signuppage() {
                                 type="email"
                                 name="email"
                                 placeholder="Enter email"
-                                onChange={onChange}
+                                onChange={handleChange}
                             />
                         </Form.Group>
                     </div>
@@ -91,7 +111,7 @@ export default function Signuppage() {
                                 type="password"
                                 name="password"
                                 placeholder="Enter password"
-                                onChange={onChange}
+                                onChange={handleChange}
                             />
                         </Form.Group>
                     </div>
@@ -104,7 +124,7 @@ export default function Signuppage() {
                                 type="password"
                                 name="confirmPassword"
                                 placeholder="Confirm password"
-                                onChange={onChange}
+                                onChange={handleChange}
                             />
                         </Form.Group>
                     </div>
