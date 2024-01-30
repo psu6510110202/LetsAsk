@@ -5,4 +5,5 @@ export interface IRepository<A> {
 
     //Comment
     getCommentByPostId?(id: string|number) : Promise<A[] | null>
+    createComment?(data: A, token: string) : Promise<A>;
 }
