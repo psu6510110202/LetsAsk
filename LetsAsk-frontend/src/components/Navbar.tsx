@@ -15,11 +15,31 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const NavBar = () => {
     const navigate = useNavigate()
     const user = userData()
     const avatar = `${conf.apiPrefix}${user.avatar}`
+
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleCreatePost = (formData) => {
+        console.log('Form Data:', formData); // check data
+    };
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -41,95 +61,167 @@ const NavBar = () => {
         navigate('/')
     }
     return (
-        <Navbar expand="lg" style={{ backgroundColor: '#B30006' }}>
-        <Container fluid>
-            <Navbar.Brand href="/">
-            <img
-                alt=""
-                src="/logo.png"
-                width="100"
-                height="40"
-                style={{marginLeft: "10%"}}
-                className="d-inline-block align-top"
-            />
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="navbarScroll" />
-            <Form className="d-flex">
-                <InputGroup style={{backgroundColor: "white",  border: '2px solid black', borderRadius: '20px'}}>
-                    <Form.Control
-                    type="search"
-                    placeholder="Search for interesting topics or tag"
-                    className="me-2"
-                    aria-label="Search"
-                    style={{ marginLeft: 'auto', width: 600, borderTopLeftRadius: '20px', borderBottomLeftRadius: '20px'}}
+        <div>
+            <Navbar expand="lg" style={{ backgroundColor: '#B30006' }}>
+                <Container fluid>
+                    <Navbar.Brand href="/">
+                        <img
+                            alt=""
+                            src="/logo.png"
+                            width="100"
+                            height="40"
+                            style={{ marginLeft: "10%" }}
+                            className="d-inline-block align-top"
+                        />
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="navbarScroll" />
+                    <Form className="d-flex">
+                        <InputGroup style={{ backgroundColor: "white", border: '2px solid black', borderRadius: '20px' }}>
+                            <Form.Control
+                                type="search"
+                                placeholder="Search for interesting topics or tag"
+                                className="me-2"
+                                aria-label="Search"
+                                style={{ marginLeft: 'auto', width: 600, borderTopLeftRadius: '20px', borderBottomLeftRadius: '20px' }}
+                            />
+                            <InputGroup.Text style={{ borderTopRightRadius: '20px', borderBottomRightRadius: '20px', backgroundColor: 'white' }}><SearchIcon /></InputGroup.Text>
+                        </InputGroup>
+                    </Form>
+                    <Nav className="justify-content-end">
+                        <Button variant="contained"
+                            onClick={handleClickOpen}
+                            style={{
+                                backgroundColor: '#FFC9C9',
+                                color: 'black',
+                                borderRadius: '20px',
+                                marginRight: '20px',
+                                fontWeight: "bold"
+                            }}>
+                            <AddCircleIcon />
+                            Add Post
+                        </Button>
+                        {user.jwt &&
+                            <>
+
+                                <Button
+                                    style={{
+                                        color: 'black',
+                                        borderRadius: '20px',
+                                        fontWeight: "bold",
+                                        fontSize: "16px"
+                                    }}
+                                    onClick={handleOpenUserMenu}>
+                                    <Avatar
+                                        alt="Remy Sharp"
+                                        src={avatar}
+                                        sx={{ marginRight: "10px" }}
+                                    />
+                                    Profile
+                                </Button>
+                                <Menu
+                                    sx={{ mt: '45px' }}
+                                    id="menu-appbar"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={Boolean(anchorElUser)}
+                                    onClose={handleCloseUserMenu}
+                                >
+                                    <MenuItem key="My Profle" onClick={handleProfile}>
+                                        <Typography textAlign="center" style={{ fontWeight: "bold" }}>My Profile</Typography>
+                                    </MenuItem>
+                                    <MenuItem key="Logout" onClick={handleLogout}>
+                                        <Typography textAlign="center" style={{ fontWeight: "bold" }}>Logout</Typography>
+                                    </MenuItem>
+                                </Menu>
+                            </>
+                        }
+                        {!user.jwt &&
+                            <Button variant="contained"
+                                style={{
+                                    backgroundColor: '#FFC9C9',
+                                    color: 'black',
+                                    borderRadius: '20px'
+                                }} href="/login">
+                                <LoginIcon />
+                                Login / Sign up
+                            </Button>
+                        }
+                    </Nav>
+                </Container>
+            </Navbar>
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                PaperProps={{
+                    component: 'form',
+                    onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+                        event.preventDefault();
+                        const formData = new FormData(event.currentTarget);
+                        const formJson = Object.fromEntries((formData as any).entries());
+
+                        // Convert the "tags" string to an array
+                        formJson.tags = formJson.tags ? formJson.tags.split(',').map(tag => tag.trim()) : [];
+
+                        handleCreatePost(formJson);
+                        handleClose();
+                    },
+                }}
+            >
+                <DialogTitle style={{ fontWeight: "bold" }}>Create Post</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        To create the post, please fill in all the fields for better communication if possible.
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        required
+                        margin="dense"
+                        id="title"
+                        name="title"
+                        label="Article Title"
+                        type="text"
+                        fullWidth
+                        variant="filled"
                     />
-                    <InputGroup.Text style={{borderTopRightRadius: '20px', borderBottomRightRadius: '20px', backgroundColor:'white'}}><SearchIcon/></InputGroup.Text>
-                </InputGroup>
-            </Form>
-            <Nav className="justify-content-end">            
-                <Button variant="contained" 
-                style={{backgroundColor: '#FFC9C9', 
-                color:'black', 
-                borderRadius: '20px',
-                marginRight: '20px',
-                fontWeight: "bold"}}>
-                    <AddCircleIcon/>
-                    Add Post
-                </Button>
-                { user.jwt &&
-                <>
-                 
-                    <Button
-                    style={{
-                    color:'black', 
-                    borderRadius: '20px',
-                    fontWeight: "bold",
-                    fontSize: "16px"}} 
-                    onClick={handleOpenUserMenu}>
-                    <Avatar
-                    alt="Remy Sharp"
-                    src={avatar}
-                    sx={{ marginRight: "10px"}}
-                    />       
-                        Profile
-                    </Button>
-                    <Menu
-                        sx={{ mt: '45px' }}
-                        id="menu-appbar"
-                        anchorEl={anchorElUser}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        keepMounted
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        open={Boolean(anchorElUser)}
-                        onClose={handleCloseUserMenu}
-                    >
-                        <MenuItem key="My Profle" onClick={handleProfile}>
-                            <Typography textAlign="center" style={{fontWeight: "bold"}}>My Profile</Typography>
-                        </MenuItem>
-                        <MenuItem key="Logout" onClick={handleLogout}>
-                            <Typography textAlign="center" style={{fontWeight: "bold"}}>Logout</Typography>
-                        </MenuItem>
-                  </Menu>
-                </>
-                }
-                { !user.jwt &&
-                    <Button variant="contained" 
-                    style={{backgroundColor: '#FFC9C9', 
-                    color:'black', 
-                    borderRadius: '20px'}} href="/login">
-                        <LoginIcon/> 
-                        Login / Sign up
-                    </Button>        
-                }
-            </Nav>
-        </Container>
-        </Navbar>
+                    <TextField
+                        autoFocus
+                        required
+                        margin="dense"
+                        id="description"
+                        name="description"
+                        label="Description"
+                        type="text"
+                        fullWidth
+                        variant="filled"
+                        multiline
+                        rows={8}
+                    />
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="tags"
+                        name="tags"
+                        label="Tags (comma-separated)"
+                        type="text"
+                        fullWidth
+                        variant="filled"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button type="submit">Create Post</Button>
+                </DialogActions>
+            </Dialog>
+        </div>
     );
 }
 
