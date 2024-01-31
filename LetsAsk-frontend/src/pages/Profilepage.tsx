@@ -1,21 +1,14 @@
-// import * as React from 'react';
-// import Repo from "../repositories"
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import Articles from "../models/Articles";
-import TopicsCard from "../components/TopicsCard";
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import Avatar from '@mui/joy/Avatar';
 import Chip from '@mui/joy/Chip';
-// import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Divider from '@mui/joy/Divider';
-// import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
-// import SvgIcon from '@mui/joy/SvgIcon';
 import BallotIcon from '@mui/icons-material/Ballot';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import NavigationBar from "../components/Navbar";
@@ -24,7 +17,6 @@ import { userData } from '../Helper';
 import conf from '../conf';
 import Comments from '../models/Comments';
 import Repo from "../repositories"
-// import CommentCard from "../components/CommentCard";
 import ProfileTopicsCard from "../components/ProfileTopicsCard";
 import ProfileCommentCard from "../components/ProfileCommentCard";
 import { Box } from '@mui/material';
