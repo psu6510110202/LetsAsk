@@ -41,9 +41,8 @@ function WriteCommentCard(prop: Props) {
     }
 
     const updateUserCommentCount = async () => {
-        user.userComments += 1
+        user.userComments = Number(user.userComments) + 1
         const secretKey = import.meta.env.VITE_SECRET_KEY
-
         const updatedEncryptedData = CryptoJS.AES.encrypt(JSON.stringify(user), secretKey).toString();
 
         sessionStorage.setItem('user', updatedEncryptedData)
