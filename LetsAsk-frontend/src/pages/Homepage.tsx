@@ -13,7 +13,7 @@ const Homepage = () => {
     const [articleData, setArticleData] = useState<Articles[]>([]);
     const [searchData, setSearchData] = useState('');
 
-    const handleSearchChange = (searchQuery) => {
+    const handleSearchChange = (searchQuery : string) => {
         setSearchData(searchQuery);
     };
 

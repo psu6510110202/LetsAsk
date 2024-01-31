@@ -5,15 +5,22 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import WriteCommentCard from "../components/WriteCommentCard";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Articles from "../models/Articles";
 import Repo from "../repositories"
 import Comments from "../models/Comments";
 
 
 const Articlepage = () => {
+    const navigate = useNavigate()
     const [articleData, setArticleData] = useState<Articles[]>([])
     const [commentData, setCommentData] = useState<Comments[]>([])
+    const [searchData] = useState('');
+
+    const handleSearchChange = () => {
+        navigate('/')
+    };
+
     const params = useParams();
 
     const fetchData = async () => {
@@ -39,7 +46,10 @@ const Articlepage = () => {
 
     return (
         <div>
-            <NavigationBar/>
+            <NavigationBar
+                searchData={searchData}
+                onSearchChange={handleSearchChange}
+            />
             <Container>
                 <Row>
                 {item && <ArticleCard ArticleData={item}/>}
