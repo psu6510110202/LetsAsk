@@ -76,7 +76,7 @@ const Articlepage = () => {
             </div>
             <Container>
                 <Row>
-                    <WriteCommentCard PostId={params.id as string}/>
+                    <WriteCommentCard PostId={params.id as string} TotalComment={item?.attributes.TotalComment as number}/>
                 </Row>
             </Container>
         </div>

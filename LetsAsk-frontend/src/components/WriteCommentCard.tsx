@@ -11,7 +11,8 @@ import CryptoJS from 'crypto-js';
 import toast from 'react-hot-toast';
 
 interface Props {
-    PostId: string
+    PostId: string,
+    TotalComment: number
 }
 
 function WriteCommentCard(prop: Props) {
@@ -26,6 +27,7 @@ function WriteCommentCard(prop: Props) {
         e.preventDefault();
         await Repo.Commentdata.createComment(newComment, user.jwt)
         await updateUserCommentCount();
+        await updatePostTotalcomment()
         setCommentText('')
         toast.success("Comment success")
         window.location.reload()
@@ -51,7 +53,6 @@ function WriteCommentCard(prop: Props) {
             userComments: user.userComments
         }
       
-
         await fetch(`${conf.apiPrefix}/api/users/${user.id}`, {
             method : 'PUT',
             headers :{
@@ -62,6 +63,24 @@ function WriteCommentCard(prop: Props) {
             body: JSON.stringify(updateData)
           })
       
+    }
+
+    const updatePostTotalcomment = async() => {
+        // console.log(user.jwt)
+        const updateData = {
+            data: {
+                TotalComment: prop.TotalComment + 1
+            }
+        }
+        await fetch(`${conf.apiPrefix}/api/post-contents/${prop.PostId}`, {
+            method : 'PUT',
+            headers :{
+              "Authorization" : `Bearer ${user.jwt}`,
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(updateData)
+          })
     }
     
     return (
