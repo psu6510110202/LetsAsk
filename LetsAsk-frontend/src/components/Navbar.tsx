@@ -15,12 +15,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import CreatePostDialog from './CreatePostDialog';
 
 const NavBar = () => {
     const navigate = useNavigate()
@@ -35,10 +30,6 @@ const NavBar = () => {
 
     const handleClose = () => {
         setOpen(false);
-    };
-
-    const handleCreatePost = (formData) => {
-        console.log('Form Data:', formData); // check data
     };
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -88,21 +79,21 @@ const NavBar = () => {
                         </InputGroup>
                     </Form>
                     <Nav className="justify-content-end">
-                        <Button variant="contained"
-                            onClick={handleClickOpen}
-                            style={{
-                                backgroundColor: '#FFC9C9',
-                                color: 'black',
-                                borderRadius: '20px',
-                                marginRight: '20px',
-                                fontWeight: "bold"
-                            }}>
-                            <AddCircleIcon />
-                            Add Post
-                        </Button>
+                        
                         {user.jwt &&
                             <>
-
+                                <Button variant="contained"
+                                    onClick={handleClickOpen}
+                                    style={{
+                                        backgroundColor: '#FFC9C9',
+                                        color: 'black',
+                                        borderRadius: '20px',
+                                        marginRight: '20px',
+                                        fontWeight: "bold"
+                                    }}>
+                                    <AddCircleIcon />
+                                    Add Post
+                                </Button>
                                 <Button
                                     style={{
                                         color: 'black',
@@ -157,70 +148,10 @@ const NavBar = () => {
                     </Nav>
                 </Container>
             </Navbar>
-
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                PaperProps={{
-                    component: 'form',
-                    onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-                        event.preventDefault();
-                        const formData = new FormData(event.currentTarget);
-                        const formJson = Object.fromEntries((formData as any).entries());
-
-                        // Convert the "tags" string to an array
-                        formJson.tags = formJson.tags ? formJson.tags.split(',').map(tag => tag.trim()) : [];
-
-                        handleCreatePost(formJson);
-                        handleClose();
-                    },
-                }}
-            >
-                <DialogTitle style={{ fontWeight: "bold" }}>Create Post</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        To create the post, please fill in all the fields for better communication if possible.
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        required
-                        margin="dense"
-                        id="title"
-                        name="title"
-                        label="Article Title"
-                        type="text"
-                        fullWidth
-                        variant="filled"
-                    />
-                    <TextField
-                        autoFocus
-                        required
-                        margin="dense"
-                        id="description"
-                        name="description"
-                        label="Description"
-                        type="text"
-                        fullWidth
-                        variant="filled"
-                        multiline
-                        rows={8}
-                    />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="tags"
-                        name="tags"
-                        label="Tags (comma-separated)"
-                        type="text"
-                        fullWidth
-                        variant="filled"
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button type="submit">Create Post</Button>
-                </DialogActions>
-            </Dialog>
+            <CreatePostDialog
+            open={open}
+            handleClose={handleClose}
+            />
         </div>
     );
 }
