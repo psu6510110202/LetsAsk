@@ -8,5 +8,6 @@ export interface IRepository<A> {
     //Comment
     getCommentByPostId?(id: string|number) : Promise<A[] | null>
     createComment?(data: A, token: string) : Promise<A>;
-    getCommentByUser?(user: string) : Promise<A[] | null> 
+    getCommentByUser?(user: string) : Promise<A[] | null>
+    deleteCommentById?(id: string|number , token : string): Promise<void>; 
 }

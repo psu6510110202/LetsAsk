@@ -31,4 +31,15 @@ export class CommentRepository implements IRepository<Comments | Postcomment> {
         const data = await resp.json()
         return data.data
     }
+
+    async  deleteCommentById(id: string | number, token: string): Promise<void> {
+        const resp = await fetch(`${this.urlPrefix}/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            }
+        })
+        const data = await resp.json()
+        return data.data;
+    }
 }
