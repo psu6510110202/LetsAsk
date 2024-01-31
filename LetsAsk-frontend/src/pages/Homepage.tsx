@@ -11,6 +11,11 @@ import Articles from "../models/Articles";
 
 const Homepage = () => {
     const [articleData, setArticleData] = useState<Articles[]>([]);
+    const [searchData, setSearchData] = useState('');
+
+    const handleSearchChange = (searchQuery) => {
+        setSearchData(searchQuery);
+    };
 
     const fetchData = async () => {
         const res = await Repo.Articledata.getAll()
@@ -27,7 +32,10 @@ const Homepage = () => {
 
     return (
         <div>
-            <NavigationBar />
+            <NavigationBar
+                searchData={searchData}
+                onSearchChange={handleSearchChange}
+            />
             <div>
                 <Carousel style={{ marginTop: "10px" }} interval={3000}>
                     <Carousel.Item>
@@ -46,11 +54,14 @@ const Homepage = () => {
                 <Row>
                     <Col><h1>Breaking News</h1></Col>
                 </Row>
-                {sortedArticleData.map((item, index) =>
-                    <Row key={index}>
-                        <TopicsCard ArticleData={item} />
-                    </Row>
-                )}
+                {sortedArticleData
+                    .filter(item =>
+                        item.attributes.Topic.toLowerCase().includes(searchData.toLowerCase()))
+                    .map((item, index) => (
+                        <Row key={index}>
+                            <TopicsCard ArticleData={item} />
+                        </Row>
+                    ))}
             </Container>
         </div>
     )

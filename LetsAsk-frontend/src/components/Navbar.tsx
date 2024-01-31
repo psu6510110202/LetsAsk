@@ -17,12 +17,25 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
 import CreatePostDialog from './CreatePostDialog';
 
-const NavBar = () => {
+const NavBar = ({ searchData, onSearchChange }) => {
     const navigate = useNavigate()
     const user = userData()
     const avatar = `${conf.apiPrefix}${user.avatar}`
 
     const [open, setOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState<string>('');
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const newSearchQuery = event.target.value;
+        setSearchQuery(newSearchQuery);
+        console.log('Search Query:', newSearchQuery);
+
+        if (onSearchChange) {
+            onSearchChange(newSearchQuery);
+        }
+
+
+    };
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -66,20 +79,24 @@ const NavBar = () => {
                         />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbarScroll" />
-                    <Form className="d-flex">
+                    <Form className="d-flex" style={{ marginBottom: "20px" }}>
                         <InputGroup style={{ backgroundColor: "white", border: '2px solid black', borderRadius: '20px' }}>
                             <Form.Control
                                 type="search"
-                                placeholder="Search for interesting topics or tag"
+                                placeholder="Search for articles"
                                 className="me-2"
                                 aria-label="Search"
                                 style={{ marginLeft: 'auto', width: 600, borderTopLeftRadius: '20px', borderBottomLeftRadius: '20px' }}
+                                value={searchQuery}
+                                onChange={handleSearchChange}
                             />
-                            <InputGroup.Text style={{ borderTopRightRadius: '20px', borderBottomRightRadius: '20px', backgroundColor: 'white' }}><SearchIcon /></InputGroup.Text>
+                            <InputGroup.Text style={{ borderTopRightRadius: '20px', borderBottomRightRadius: '20px', backgroundColor: 'white' }}>
+                                <SearchIcon />
+                            </InputGroup.Text>
                         </InputGroup>
                     </Form>
                     <Nav className="justify-content-end">
-                        
+
                         {user.jwt &&
                             <>
                                 <Button variant="contained"
@@ -149,8 +166,8 @@ const NavBar = () => {
                 </Container>
             </Navbar>
             <CreatePostDialog
-            open={open}
-            handleClose={handleClose}
+                open={open}
+                handleClose={handleClose}
             />
         </div>
     );
