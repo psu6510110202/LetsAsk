@@ -22,21 +22,33 @@ import ProfileCommentCard from "../components/ProfileCommentCard";
 import { Box } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
+import { useNavigate } from "react-router-dom";
 
 
 export default function Profilepage() {
     const user = userData();
+    const navigate = useNavigate()
     const avatar = `${conf.apiPrefix}${user.avatar}`
     const [articleData, setArticleData]  = useState<Articles[]>([]);
     const [commentData, setCommentData] = useState<Comments[]>([])
     const [currentArticlePage,  setCurrentArticlePage] = useState(1)
     const [currentCommentPage,  setCurrentCommentPage] = useState(1)
+    const [searchData] = useState('');
 
+    const handleSearchChange = () => {
+        navigate('/')
+    };
     const articleByUser = articleData.filter(data => data.attributes.Creator === `${user.username}`)
 
     const filterArticleTitle = (id : number) => {
         const data = articleData.filter(a => a.id == id)
-        return data[0].attributes.Topic
+        const filterData = {
+            id: data[0].id,
+            title: data[0].attributes.Topic,
+            totalComment: data[0].attributes.TotalComment
+        }
+        // console.log(filterData)
+        return filterData
     }
 
     // const params = useParams();
@@ -83,7 +95,10 @@ export default function Profilepage() {
 
     return (
         <div>
-            <NavigationBar />
+            <NavigationBar
+                searchData={searchData}
+                onSearchChange={handleSearchChange}
+            />
             <div className="mainBox">
                 <div className="leftBox">
                     <Card
@@ -163,7 +178,7 @@ export default function Profilepage() {
                     <Container fluid="md" style={{ color: "white", marginTop: "20px"}}>
                     {CommentPaginateData.map((item, index) =>
                         <Row key={index}>
-                            <ProfileCommentCard CommentData={item} index={index} articleTitle={filterArticleTitle(item.attributes.PostContentId)}/>
+                            <ProfileCommentCard CommentData={item} index={index} article={filterArticleTitle(item.attributes.PostContentId)}/>
                         </Row>
                     )}
                     <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%" bgcolor="white" sx={{borderRadius: 8}} marginTop='1%' marginBottom='1%'>
