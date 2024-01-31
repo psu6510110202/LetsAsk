@@ -16,4 +16,10 @@ export class ArticleRepository implements IRepository<Articles> {
         const data = await resp.json();
         return data.data;
     }
+
+    async getArticleByUser(user: string): Promise<Articles[] | null> {
+        const resp = await fetch(`${this.urlPrefix}?filter[Creator][$eq]=${user}`)
+        const data = await resp.json()
+        return data.data
+    }
 }

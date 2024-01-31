@@ -25,4 +25,10 @@ export class CommentRepository implements IRepository<Comments | Postcomment> {
         const data_res = await resp.json()
         return data_res;
     }
+
+    async getCommentByUser(user: string): Promise<Comments[] | null> {
+        const resp = await fetch(`${this.urlPrefix}?filters[Creator][$eq]=${user}`)
+        const data = await resp.json()
+        return data.data
+    }
 }
