@@ -31,6 +31,11 @@ const NavBar = () => {
         setAnchorElUser(null);
     };
 
+    const handleProfile = () => {
+        setAnchorElUser(null);
+        navigate(`/profile`)
+    };
+
     const handleLogout = () => {
         Logout()
         navigate('/')
@@ -104,7 +109,7 @@ const NavBar = () => {
                         open={Boolean(anchorElUser)}
                         onClose={handleCloseUserMenu}
                     >
-                        <MenuItem key="My Profle" onClick={handleCloseUserMenu}>
+                        <MenuItem key="My Profle" onClick={handleProfile}>
                             <Typography textAlign="center" style={{fontWeight: "bold"}}>My Profile</Typography>
                         </MenuItem>
                         <MenuItem key="Logout" onClick={handleLogout}>

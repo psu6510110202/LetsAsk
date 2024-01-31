@@ -23,6 +23,8 @@ function App() {
         <Route path="/login" element={<Loginpage />} />
         <Route path="/signup" element={<Signuppage />} />
         <Route path="/profile/:id" element={<Profilepage />} />
+        <Route path="/profile" element={<Profilepage />} />
+        
       </Routes>
     </BrowserRouter>
   )
