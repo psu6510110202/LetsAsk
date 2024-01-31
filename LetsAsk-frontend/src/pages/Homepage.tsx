@@ -10,11 +10,11 @@ import Articles from "../models/Articles";
 // import ExampleCarouselImage from 'components/ExampleCarouselImage';
 
 const Homepage = () => {
-    const [articleData, setArticleData]  = useState<Articles[]>([]);
+    const [articleData, setArticleData] = useState<Articles[]>([]);
 
     const fetchData = async () => {
         const res = await Repo.Articledata.getAll()
-        if(res) {
+        if (res) {
             setArticleData(res)
         }
     }
@@ -27,25 +27,32 @@ const Homepage = () => {
 
     return (
         <div>
-            <NavigationBar/>
+            <NavigationBar />
             <div>
-                <Carousel style={{marginTop: "10px"}}>
-                    <Carousel.Item style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <img src="/banner1.png" height="200" />
+                <Carousel style={{ marginTop: "10px" }} interval={3000}>
+                    <Carousel.Item>
+                        <img src="/banner1.png" alt="Banner 1" height="200" className="mx-auto d-block" />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img src="/banner2.png" alt="Banner 2" height="200" className="mx-auto d-block" />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img src="/banner3.png" alt="Banner 3" height="200" className="mx-auto d-block" />
                     </Carousel.Item>
                 </Carousel>
+
             </div>
-            <Container fluid="md" style={{color: "white", marginTop: "20px"}}>
+            <Container fluid="md" style={{ color: "white", marginTop: "20px" }}>
                 <Row>
                     <Col><h1>Breaking News</h1></Col>
                 </Row>
-                {sortedArticleData.map((item, index) => 
+                {sortedArticleData.map((item, index) =>
                     <Row key={index}>
-                        <TopicsCard ArticleData={item}/>
+                        <TopicsCard ArticleData={item} />
                     </Row>
-                )}      
+                )}
             </Container>
-        </div>      
+        </div>
     )
 }
 
