@@ -6,23 +6,32 @@ import ChatIcon from '@mui/icons-material/Chat';
 import Button from '@mui/material/Button';
 import Articles from '../models/Articles';
 import { useNavigate } from 'react-router-dom';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { userData } from '../Helper';
+import { useState } from 'react';
+import DialogDeleteArticle from './DialogDeleteArticle';
 
 interface Props {
     ArticleData : Articles
 }
 
-
 function ProfileTopicsCard(props: Props) {
+    const user = userData()
     const navigate = useNavigate();
     const item = props.ArticleData.attributes
+    const [openDialog, setOpenDialog] = useState(false);
+
 
     const dateTime = new Date(item.createdAt);
 
-    // Get the date and time components
     const date = dateTime.toDateString();
     const time = dateTime.toTimeString().split(' ')[0];
 
     const tagsList = item.Tags.split(',').map(item => item.trim());
+
+    const handleClickOpenDialog = () => {
+        setOpenDialog(true);
+    };
 
     return (
         <Card style={{ width: '450px', borderRadius: "40px" , backgroundColor: "#282727", color: "white", marginTop: "10px"}}>
@@ -63,6 +72,17 @@ function ProfileTopicsCard(props: Props) {
             <Card.Text>
                 <p style={{color: "#F32222" ,fontSize: '16px'}}>User: {item.Creator} &nbsp;&nbsp; {date} &nbsp;&nbsp; {time}</p>
             </Card.Text>
+            <Card.Text style={{display: "flex", justifyContent: 'end'}}>
+                <Button onClick={handleClickOpenDialog}>
+                    <DeleteIcon style={{ fontSize: '2rem', color: '#F32222' }} />     
+                </Button>
+            </Card.Text>
+            <DialogDeleteArticle
+                open={openDialog}
+                handleClose={() => setOpenDialog(false)}
+                articleId={props.ArticleData.id}
+                user={user}
+            />
         </Card.Body>
         </Card>
     );
