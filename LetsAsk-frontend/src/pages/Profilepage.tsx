@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Articles from "../models/Articles";
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
@@ -23,17 +23,108 @@ import { Box } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
 import { useNavigate } from "react-router-dom";
-
+import Tooltip from '@mui/joy/Tooltip';
+import CryptoJS from 'crypto-js';
 
 export default function Profilepage() {
     const user = userData();
     const navigate = useNavigate()
-    const avatar = `${conf.apiPrefix}${user.avatar}`
     const [articleData, setArticleData]  = useState<Articles[]>([]);
     const [commentData, setCommentData] = useState<Comments[]>([])
     const [currentArticlePage,  setCurrentArticlePage] = useState(1)
     const [currentCommentPage,  setCurrentCommentPage] = useState(1)
     const [searchData] = useState('');
+    const [avatar, setAvatar] = useState<string>(`${conf.apiPrefix}${user.avatar}`);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+    const handleAvatarClick = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = event.target.files?.[0];
+
+        if (selectedFile) {
+            uploadAvatar(selectedFile);
+        }
+        console.log("File Input Element:", fileInputRef.current);
+    };
+
+    const uploadAvatar = async (file: File) => {
+        try {
+            const formData = new FormData();
+            formData.append('files', file);
+
+            console.log('JWT Token:', user.jwt);
+
+            const response = await fetch(`${conf.apiPrefix}/api/upload`, {
+                method: 'POST',
+                headers: {
+                    "Authorization": `Bearer ${user.jwt}`
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                console.error(`Failed to upload image to Strapi: ${response.statusText}`);
+                const errorData = await response.json();
+                console.error('Error details:', errorData);
+                throw new Error(`Failed to upload image to Strapi: ${response.statusText}`);
+            }
+
+            const responseData = await response.json();
+            // console.log(responseData);
+            // console.log(responseData[0].url);
+
+            if (responseData.length > 0) {
+                const newAvatarUrl = responseData[0].url;
+                const updateState = `${conf.apiPrefix}${newAvatarUrl}`
+                setAvatar(updateState);
+                await fetch(`${conf.apiPrefix}/api/users/${user.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        "Authorization": `Bearer ${user.jwt}`,
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ avatar: newAvatarUrl })
+                })
+            } else {
+                console.error('Strapi did not return a valid response');
+            }
+        } catch (error) {
+            console.error('Error uploading avatar to Strapi:', error);
+        }
+        updateSessions();
+        // console.log("avatar: ", avatar);
+    };
+
+    const updateSessions = async () => {
+        const userInfo = await fetch(`${conf.apiPrefix}/api/users/me?populate=*`, {
+            headers: {
+                "Authorization": `Bearer ${user.jwt}`
+            }
+        })
+
+        const data = await userInfo.json();
+        const encryptedData = sessionStorage.getItem('user');
+        const secretKey = import.meta.env.VITE_SECRET_KEY;
+        let info;
+        if (encryptedData) {
+            const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+            info = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        }
+
+        // console.log(info);
+        info.avatar = data.avatar;
+
+        const updatedEncryptedData = CryptoJS.AES.encrypt(JSON.stringify(info), secretKey).toString();
+        sessionStorage.setItem('user', updatedEncryptedData);
+
+        window.location.reload();
+    }
 
     const handleSearchChange = () => {
         navigate('/')
@@ -69,16 +160,16 @@ export default function Profilepage() {
 
     const handlePaginationArtChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setCurrentArticlePage(value);
-      };
-    
-      const handlePaginationCommentChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    };
+
+    const handlePaginationCommentChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setCurrentCommentPage(value);
-      };
-    
+    };
+
 
     const fetchData = async () => {
         const respArticles = await Repo.Articledata.getAll()
-        const respComments = await Repo.Commentdata.getCommentByUser(user.username) 
+        const respComments = await Repo.Commentdata.getCommentByUser(user.username)
         if(respArticles) {
             setArticleData(respArticles)
         }
@@ -108,7 +199,23 @@ export default function Profilepage() {
                         variant="soft"
                     >
                         <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
-                            <Avatar src={avatar} sx={{ '--Avatar-size': '4rem' }} />
+                            <Tooltip title="Change Image" arrow>
+                                <div>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        style={{ display: "none" }}
+                                        ref={fileInputRef}
+                                        id="fileInput"
+                                    />
+                                    <Avatar
+                                        src={avatar}
+                                        sx={{ '--Avatar-size': '4rem', cursor: 'pointer' }}
+                                        onClick={handleAvatarClick}
+                                    />
+                                </div>
+                            </Tooltip>
                             <Chip
                                 size="sm"
                                 variant="soft"
@@ -159,15 +266,15 @@ export default function Profilepage() {
                             </Row>
                         )}
                         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%" bgcolor="white" sx={{borderRadius: 8}} marginTop='1%' marginBottom='1%'>
-                        <Stack spacing={2}>
-                                <Pagination 
-                                    count={paginateArtValue} 
-                                    size="large" 
+                            <Stack spacing={2}>
+                                <Pagination
+                                    count={paginateArtValue}
+                                    size="large"
                                     color="primary"
                                     showFirstButton
                                     showLastButton
                                     page={currentArticlePage}
-                                    onChange={handlePaginationArtChange} 
+                                    onChange={handlePaginationArtChange}
                                 />
                             </Stack>
                         </Box>
@@ -176,21 +283,21 @@ export default function Profilepage() {
                 <div className="rightBox">
                     <h1>COMMENT</h1>
                     <Container fluid="md" style={{ color: "white", marginTop: "20px"}}>
-                    {CommentPaginateData.map((item, index) =>
-                        <Row key={index}>
-                            <ProfileCommentCard CommentData={item} index={index} article={filterArticleTitle(item.attributes.PostContentId)}/>
-                        </Row>
-                    )}
-                    <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%" bgcolor="white" sx={{borderRadius: 8}} marginTop='1%' marginBottom='1%'>
-                        <Stack spacing={2}>
-                                <Pagination 
-                                    count={paginateCommentValue} 
-                                    size="large" 
+                        {CommentPaginateData.map((item, index) =>
+                            <Row key={index}>
+                                <ProfileCommentCard CommentData={item} index={index} article={filterArticleTitle(item.attributes.PostContentId)}/>
+                            </Row>
+                        )}
+                        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%" bgcolor="white" sx={{borderRadius: 8}} marginTop='1%' marginBottom='1%'>
+                            <Stack spacing={2}>
+                                <Pagination
+                                    count={paginateCommentValue}
+                                    size="large"
                                     color="primary"
                                     showFirstButton
                                     showLastButton
                                     page={currentCommentPage}
-                                    onChange={handlePaginationCommentChange} 
+                                    onChange={handlePaginationCommentChange}
                                 />
                             </Stack>
                         </Box>
