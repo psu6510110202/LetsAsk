@@ -50,6 +50,8 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({ open, handleClose }
         toast.success('Post success');
 
         handleClose();
+
+        window.location.reload();
     };
 
     const updateUserArticleCount = async () => {
