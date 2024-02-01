@@ -1,0 +1,63 @@
+/* Profilepage.css */
+
+div {
+    box-sizing: border-box;
+}
+
+.mainBox {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+}
+
+.centerBox,
+.rightBox {
+    flex: 1;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.leftBox {
+    margin-right: 20px;
+}
+
+.centerBox h1,
+.rightBox h1 {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.PostCount,
+.CommentCount {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.PostCount h5,
+.CommentCount h5 {
+    margin: 0;
+    margin-right: 5px;
+}
+
+.PostCount .circle,
+.CommentCount .circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 50%;
+}
+
+.PostCount h5,
+.CommentCount h5,
+.PostCount p,
+.CommentCount p {
+    margin: 0;
+}

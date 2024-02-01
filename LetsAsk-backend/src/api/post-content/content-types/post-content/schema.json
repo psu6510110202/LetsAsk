@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "post_contents",
+  "info": {
+    "singularName": "post-content",
+    "pluralName": "post-contents",
+    "displayName": "PostContent",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Topic": {
+      "type": "string",
+      "required": true
+    },
+    "Description": {
+      "type": "text",
+      "required": true
+    },
+    "Creator": {
+      "type": "string",
+      "required": true
+    },
+    "TotalComment": {
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "AvatarCreator": {
+      "type": "string"
+    },
+    "Tags": {
+      "type": "string"
+    }
+  }
+}
