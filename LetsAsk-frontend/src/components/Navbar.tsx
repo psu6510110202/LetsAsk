@@ -17,7 +17,12 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router';
 import CreatePostDialog from './CreatePostDialog';
 
-const NavBar = ({ searchData, onSearchChange }) => {
+interface NavBarProps {
+    searchData: string;
+    onSearchChange: (query: string) => void;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ searchData, onSearchChange }) => {
     const navigate = useNavigate()
     const user = userData()
     const avatar = `${conf.apiPrefix}${user.avatar}`
