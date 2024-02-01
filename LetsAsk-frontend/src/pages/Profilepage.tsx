@@ -38,7 +38,7 @@ export default function Profilepage() {
     const handleSearchChange = () => {
         navigate('/')
     };
-    const articleByUser = articleData.filter(data => data.attributes.Creator === `${user.username}`)
+    const articleByUser = articleData.filter(data => data.attributes.Creator === `${user.username}` && data.attributes.Topic != 'Deleted')
 
     const filterArticleTitle = (id : number) => {
         const data = articleData.filter(a => a.id == id)

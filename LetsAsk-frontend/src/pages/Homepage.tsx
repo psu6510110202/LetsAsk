@@ -10,7 +10,6 @@ import Articles from "../models/Articles";
 import { Box } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
-// import ExampleCarouselImage from 'components/ExampleCarouselImage';
 
 const Homepage = () => {
     const [articleData, setArticleData] = useState<Articles[]>([]);
@@ -39,7 +38,8 @@ const Homepage = () => {
         fetchData()
     }, [])
 
-    const sortedArticleData = [...articleData].sort((a, b) => b.id - a.id);
+    const filteredArticles = articleData.filter(article => article.attributes.Topic !== "Deleted");
+    const sortedArticleData = [...filteredArticles].sort((a, b) => b.id - a.id);
 
     return (
         <div>
