@@ -19,12 +19,13 @@ import Comments from '../models/Comments';
 import Repo from "../repositories"
 import ProfileTopicsCard from "../components/ProfileTopicsCard";
 import ProfileCommentCard from "../components/ProfileCommentCard";
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
 import { useNavigate } from "react-router-dom";
 import Tooltip from '@mui/joy/Tooltip';
 import CryptoJS from 'crypto-js';
+import LocalSeeIcon from '@mui/icons-material/LocalSee';
 
 export default function Profilepage() {
     const user = userData();
@@ -37,7 +38,7 @@ export default function Profilepage() {
     const [avatar, setAvatar] = useState<string>(`${conf.apiPrefix}${user.avatar}`);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-    const handleAvatarClick = () => {
+    const handleUploadClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
@@ -198,9 +199,28 @@ export default function Profilepage() {
                         size="lg"
                         variant="soft"
                     >
-                        <CardContent sx={{ alignItems: 'center', textAlign: 'center' }}>
+                        <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                             <Tooltip title="Change Image" arrow>
                                 <div>
+                                    <Avatar
+                                        src={avatar}
+                                        sx={{ '--Avatar-size': '4rem', cursor: 'pointer', marginLeft: '20px' }}
+                                    />
+                                    <Chip
+                                    size="sm"
+                                    variant="soft"
+                                    color="primary"
+                                    sx={{
+                                        mt: -1,
+                                        mb: 1,
+                                        border: '3px solid',
+                                        borderColor: 'background.surface',
+                                        marginTop: '10px'
+                                    }}
+                                    onClick={handleUploadClick}
+                                    >
+                                    <LocalSeeIcon sx={{fontSize: 'medium', marginRight: '5px'}}/>Upload Avatar
+                                    </Chip>
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -209,26 +229,8 @@ export default function Profilepage() {
                                         ref={fileInputRef}
                                         id="fileInput"
                                     />
-                                    <Avatar
-                                        src={avatar}
-                                        sx={{ '--Avatar-size': '4rem', cursor: 'pointer' }}
-                                        onClick={handleAvatarClick}
-                                    />
                                 </div>
                             </Tooltip>
-                            <Chip
-                                size="sm"
-                                variant="soft"
-                                color="primary"
-                                sx={{
-                                    mt: -1,
-                                    mb: 1,
-                                    border: '3px solid',
-                                    borderColor: 'background.surface',
-                                }}
-                            >
-                                PRO
-                            </Chip>
                             <Typography level="title-lg">{user.username}</Typography>
                             <Typography level="body-sm" sx={{ maxWidth: '24ch' }}>
                                 Hello, this is my bio and I am a PRO member of MUI. I am a developer and I
