@@ -19,6 +19,7 @@ function App() {
     <Toaster position="top-center" reverseOrder={false} />
       <Routes>
         <Route index element={<Homepage/>}/>
+        <Route path="*" element={<Homepage/>} />
         <Route path='/article/:id' element={<Articlepage/>}/>
         <Route path="/login" element={<Loginpage />} />
         <Route path="/signup" element={<Signuppage />} />
