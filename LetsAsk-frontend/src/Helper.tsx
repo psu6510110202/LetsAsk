@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom"
 import { useEffect } from "react"
 import CryptoJS from 'crypto-js';
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export const ScrollToTop = () => {
     const {pathname} = useLocation()
@@ -55,5 +56,22 @@ export const Logout = () => {
     toast.success("Logout Successful.");
     return
 }
-  
+
+type Props = {
+    children: JSX.Element
+  }
+
+export const ProtectRoute = ({children}: Props) => {
+    const navigate = useNavigate()
+    const data = userData()
+
+    useEffect(() => {
+        if (!data.jwt) {
+            navigate('/login')
+        }
+    }, [])
+
+    return children
+}
+
   

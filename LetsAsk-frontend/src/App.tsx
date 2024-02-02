@@ -5,7 +5,7 @@ import Profilepage from "./pages/Profilepage";
 import Signuppage from "./pages/Signup";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Articlepage from "./pages/Articlepage";
-import { ScrollToTop } from "./Helper";
+import { ProtectRoute, ScrollToTop } from "./Helper";
 import { Toaster } from "react-hot-toast";
 // import { Sign } from "crypto";
 
@@ -22,8 +22,7 @@ function App() {
         <Route path='/article/:id' element={<Articlepage/>}/>
         <Route path="/login" element={<Loginpage />} />
         <Route path="/signup" element={<Signuppage />} />
-        <Route path="/profile/:id" element={<Profilepage />} />
-        <Route path="/profile" element={<Profilepage />} />
+        <Route path="/profile" element={<ProtectRoute><Profilepage /></ProtectRoute>} />
         
       </Routes>
     </BrowserRouter>
