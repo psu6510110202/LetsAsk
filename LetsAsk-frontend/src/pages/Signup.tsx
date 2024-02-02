@@ -42,7 +42,7 @@ export default function Signuppage() {
             email: newUser.email,
             password: newUser.password
         }
-        console.log(data)
+        // console.log(data)
         try {
             await axios.post(url, data)
             toast.success('Registion Successfully')

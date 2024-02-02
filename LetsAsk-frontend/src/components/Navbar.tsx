@@ -33,7 +33,7 @@ const NavBar: React.FC<NavBarProps> = ({ searchData, onSearchChange }) => {
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newSearchQuery = event.target.value;
         setSearchQuery(newSearchQuery);
-        console.log('Search Query:', newSearchQuery);
+        // console.log('Search Query:', newSearchQuery);
 
         if (onSearchChange) {
             onSearchChange(newSearchQuery);

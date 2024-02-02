@@ -50,7 +50,7 @@ export default function Profilepage() {
         if (selectedFile) {
             uploadAvatar(selectedFile);
         }
-        console.log("File Input Element:", fileInputRef.current);
+        // console.log("File Input Element:", fileInputRef.current);
     };
 
     const uploadAvatar = async (file: File) => {
@@ -58,7 +58,7 @@ export default function Profilepage() {
             const formData = new FormData();
             formData.append('files', file);
 
-            console.log('JWT Token:', user.jwt);
+            // console.log('JWT Token:', user.jwt);
 
             const response = await fetch(`${conf.apiPrefix}/api/upload`, {
                 method: 'POST',
