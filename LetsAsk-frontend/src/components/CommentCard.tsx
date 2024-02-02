@@ -31,9 +31,6 @@ function CommentCard(prop: Props) {
         <Card.Text>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <h6 style={{color: '#F32222'}}>Comment {prop.index + 1}</h6>
-                <Button>
-                    <FlagIcon style={{ fontSize: '2rem', color: '#F32222' }} />
-                </Button>
             </div>
         </Card.Text>
         <Card.Text>

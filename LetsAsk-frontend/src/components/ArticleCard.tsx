@@ -30,9 +30,6 @@ function ArticleCard(props : Props) {
             <Card.Title>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <h3>{item.Topic}</h3>
-                    <Button>
-                        <FlagIcon style={{ fontSize: '2rem', color: '#F32222' }} />
-                    </Button>
                 </div>
             </Card.Title>
 
