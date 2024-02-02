@@ -233,9 +233,7 @@ export default function Profilepage() {
                             </Tooltip>
                             <Typography level="title-lg">{user.username}</Typography>
                             <Typography level="body-sm" sx={{ maxWidth: '24ch' }}>
-                                Hello, this is my bio and I am a PRO member of MUI. I am a developer and I
-                                love to code.
-                            </Typography>
+                            Hello, I am {user.username}. I have already posted {user.userArticles} articles and commented on any article on this website {user.userComments} times.</Typography>
                         </CardContent>
                         <CardOverflow
                             variant="soft"
