@@ -156,7 +156,7 @@ export default function Profilepage() {
     const ArticlePaginateData = sortedArticleData.slice(firstArtIndex, lastArtIndex)
     const CommentPaginateData = sortedCommentData.slice(firstCommentIndex, lastCommentIndex)
 
-    const paginateArtValue = Math.ceil(articleData.length/dataPerpage)
+    const paginateArtValue = Math.ceil(sortedArticleData.length/dataPerpage)
     const paginateCommentValue = Math.ceil(commentData.length/dataPerpage)
 
     const handlePaginationArtChange = (event: React.ChangeEvent<unknown>, value: number) => {
