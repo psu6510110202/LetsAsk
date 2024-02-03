@@ -34,6 +34,21 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({ open, handleClose }
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
+        formData.tags
+            .replace(/\s*,\s*/g, ', ')
+            .replace(/,{2,}/g, ',');
+
+        const tagsArray = formData.tags
+        .split(',')
+        .map((tag: string) => tag.trim())
+        .filter((tag: string) => tag !== '')
+        .map((tag: string) => {
+            // Check if the tag contains alphabets, and convert to lowercase if true
+            return /[a-zA-Z]/.test(tag) ? tag.toLowerCase() : tag;
+        });
+
+        formData.tags = tagsArray.join(', ');
+
         const postData: PostArticle = {
         data: {
             Topic: formData.title,
