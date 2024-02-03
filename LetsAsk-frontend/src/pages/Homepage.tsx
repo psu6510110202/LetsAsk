@@ -27,6 +27,10 @@ const Homepage = () => {
         setCurrentArticlePage(value);
     };
 
+    const handleTagClick = (tag: string) => {
+        setSearchData(tag);
+    };
+
     const fetchData = async () => {
         const res = await Repo.Articledata.getAll()
         if (res) {
@@ -67,11 +71,15 @@ const Homepage = () => {
                 </Row>
                 <Container fluid="md" style={{ color: "white", marginTop: "20px" }}>
                     {sortedArticleData
-                        .filter(item => item.attributes.Topic.toLowerCase().includes(searchData.toLowerCase()))
+                        .filter(item => {
+                            const matchTopic = item.attributes.Topic.toLowerCase().includes(searchData.toLowerCase());
+                            const matchTags = item.attributes.Tags.toLowerCase().includes(searchData.toLowerCase());
+                            return matchTopic || matchTags;
+                        })
                         .slice((currentArticlePage - 1) * dataPerpage, currentArticlePage * dataPerpage)
                         .map((item, index) => (
                             <Row key={index}>
-                                <TopicsCard ArticleData={item} />
+                                <TopicsCard ArticleData={item} onTagClick={handleTagClick}/>
                             </Row>
                         ))}
                     <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100%" bgcolor="white" sx={{ borderRadius: 8 }} marginTop='1%' marginBottom='1%'>

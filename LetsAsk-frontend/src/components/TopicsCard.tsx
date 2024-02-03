@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface Props {
     ArticleData : Articles
+    onTagClick: (tag: string) => void;
 }
 
 
@@ -53,9 +54,16 @@ function TopicsCard(props: Props) {
                 <Container fluid="md">
                     <Row>
                         <Col>
-                        {tagsList.map((item) => 
-                            <Button variant="contained" style={{backgroundColor: '#6B1212', borderRadius: '60px', marginRight: '10px'}}>{item}</Button>
-                        )}
+                            {tagsList.map((tag, index) => (
+                                <Button
+                                    key={index}
+                                    variant="contained"
+                                    style={{ backgroundColor: '#6B1212', borderRadius: '60px', marginRight: '10px' }}
+                                    onClick={() => props.onTagClick(tag)}
+                                >
+                                    {tag}
+                                </Button>
+                            ))}
                         </Col>
                     </Row>
                 </Container>
