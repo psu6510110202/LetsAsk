@@ -22,7 +22,7 @@ interface NavBarProps {
     onSearchChange: (query: string) => void;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ searchData, onSearchChange }) => {
+const NavBar: React.FC<NavBarProps> = (props: NavBarProps ) => {
     const navigate = useNavigate()
     const user = userData()
     const avatar = `${conf.apiPrefix}${user.avatar}`
@@ -35,8 +35,8 @@ const NavBar: React.FC<NavBarProps> = ({ searchData, onSearchChange }) => {
         setSearchQuery(newSearchQuery);
         // console.log('Search Query:', newSearchQuery);
 
-        if (onSearchChange) {
-            onSearchChange(newSearchQuery);
+        if (props.onSearchChange) {
+            props.onSearchChange(newSearchQuery);
         }
 
 

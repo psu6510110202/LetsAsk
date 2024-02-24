@@ -19,7 +19,7 @@ import Comments from '../models/Comments';
 import Repo from "../repositories"
 import ProfileTopicsCard from "../components/ProfileTopicsCard";
 import ProfileCommentCard from "../components/ProfileCommentCard";
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Pagination from '@mui/material/Pagination';
 import { useNavigate } from "react-router-dom";
