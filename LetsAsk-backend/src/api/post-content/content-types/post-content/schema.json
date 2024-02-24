@@ -33,7 +33,8 @@
       "type": "string"
     },
     "Tags": {
-      "type": "string"
+      "type": "string",
+      "required": true
     }
   }
 }
