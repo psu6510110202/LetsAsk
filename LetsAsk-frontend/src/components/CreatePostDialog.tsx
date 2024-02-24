@@ -152,6 +152,7 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({ open, handleClose }
                 }}
                 onChange={handleInputChange}
                 value={formData.tags}
+                required
             />
             </DialogContent>
             <DialogActions>

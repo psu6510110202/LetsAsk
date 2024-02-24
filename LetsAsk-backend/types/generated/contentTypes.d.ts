@@ -415,7 +415,7 @@ export interface ApiPostContentPostContent extends Schema.CollectionType {
       Attribute.Required &
       Attribute.DefaultTo<0>;
     AvatarCreator: Attribute.String;
-    Tags: Attribute.String;
+    Tags: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
