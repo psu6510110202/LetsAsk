@@ -1,7 +1,7 @@
 .tmp/
 .cache/
 .git/
-.env
+
 build/
 node_modules/
 # Ingoring folders that might be used in starter templates
