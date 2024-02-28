@@ -1,7 +1,6 @@
 // import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Form from 'react-bootstrap/Form';
-import Divider from '@mui/material/Divider';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import React, { useState, useEffect } from 'react';
@@ -74,7 +73,7 @@ export default function Signuppage() {
     return (
         <div className="container mt-6" style={{ color: 'white', padding: '20px' }}>
             <h2 className="text-center">Sign up</h2>
-            <h6 className="text-center">Enter your google account  details to continue</h6>
+            <h6 className="text-center">Enter your account  details to continue</h6>
             <div className="Signup">
                 <form noValidate autoComplete="off" onSubmit={onSubmit}>
                     <div className="d-flex justify-content-center">
@@ -157,22 +156,9 @@ export default function Signuppage() {
                         </Button>
 
                     </div>
-
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '20px 0' }}>
-                        <Divider style={{ width: '25%', height: '1px', backgroundColor: 'white' }} />
-                        <span style={{ margin: '0 70px', color: 'white' }}>or</span>
-                        <Divider style={{ width: '25%', height: '1px', backgroundColor: 'white' }} />
-                    </div>
-
-                    <div className="d-flex justify-content-center">
-                        <Button className="mt-2" variant="contained" type="submit" style={{ backgroundColor: '#FFFFFF', color: 'black', borderRadius: '20px', width: '593px', height: '64px', fontSize: '24px', fontWeight: 'bold' }}>
-                            Google
-                        </Button>
-                    </div>
-
                     <div className="d-flex justify-content-center">
                         <Form.Text className="mt-4" style={{ color: 'white' }}>
-                            I already have an account? <a href="/login" style={{ color: 'white', textDecoration: 'underline' }}>Login</a>
+                            Already have an account? <a href="/login" style={{ color: 'white', textDecoration: 'underline' }}>Login</a>
                         </Form.Text>
                     </div>
                 </form>
